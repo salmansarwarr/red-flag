@@ -54,10 +54,10 @@ export default function Home() {
     }, []);
 
     const login = async () => {
-        if (!captchaValue) {
-            alert("Please complete the CAPTCHA");
-            return;
-        }
+        // if (!captchaValue) {
+        //     alert("Please complete the CAPTCHA");
+        //     return;
+        // }
 
         setLoading(true);
         try {
@@ -106,13 +106,14 @@ export default function Home() {
                             Learn How It Works
                         </Link>
                     </div>
-                    <div className="flex justify-center w-full">
-                        {/* @ts-ignore */}
+                    {/* <div className="flex justify-center w-full">
+                        
                         <ReCAPTCHA
                             sitekey="6Let1tIqAAAAAAK8XujHEbguVtjwvEjbnCBIN7DR"
                             onChange={onCaptchaChange}
                         />
-                    </div>
+                    </div> */}
+                    
                 </div>
             </section>
 
