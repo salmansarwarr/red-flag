@@ -101,7 +101,7 @@ export default function Home() {
                         id="sign-up"
                         className="text-4xl md:text-6xl font-bold tracking-tight"
                     >
-                        Expose bad bosses, liars, and frauds.{" "}
+                        We've all worked with someone awful.{" "}
                         <span className="text-destructive">See the truth</span>
                         —or make sure the world knows.
                     </h1>
