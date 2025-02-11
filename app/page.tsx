@@ -72,6 +72,28 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-background">
+            <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <div className="container flex h-16 items-center gap-4 px-4 md:px-6">
+                    <div className="flex items-center gap-2 font-semibold">
+                        <Flag className="h-5 w-5 text-destructive" />
+                        RedFlag
+                    </div>
+
+                    <nav className="hidden md:flex flex-1 justify-end items-center gap-4 md:gap-6">
+                        {loading ? (
+                            <Loader2 className="animate-spin mr-2 h-5 w-5" />
+                        ) : (
+                            <Button
+                                onClick={login}
+                                size="default"
+                                className=" px-8"
+                            >
+                                Login / Sign Up
+                            </Button>
+                        )}
+                    </nav>
+                </div>
+            </header>
             {/* Hero Section */}
             <section className="relative py-20 px-4 text-center">
                 <div className="max-w-4xl mx-auto space-y-6">
@@ -84,8 +106,9 @@ export default function Home() {
                         —or make sure the world knows.
                     </h1>
                     <p className="text-xl md:text-2xl text-muted-foreground">
-                        Find out who's been flagged, or flag them yourself. No
-                        more getting screwed over.
+                        Red Flag is reputation on the blockchain—secure,
+                        transparent, and immutable. And because flags cost real
+                        money, every flag is serious.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                         {loading ? (
@@ -113,45 +136,39 @@ export default function Home() {
                             onChange={onCaptchaChange}
                         />
                     </div>
-                    
                 </div>
             </section>
 
-            {/* Search Section */}
-            <section className="max-w-3xl mx-auto px-4 py-12">
-                <form onSubmit={handleSearch} className="space-y-6">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-3.5 h-5 w-5 text-muted-foreground" />
+            {/* Search & Flagging Section */}
+            <section className="max-w-3xl mx-auto px-6 py-12 bg-white shadow-md rounded-2xl">
+                <div className="grid md:grid-cols-2 gap-8">
+                    {/* Search Box */}
+                    <form onSubmit={handleSearch} className="relative">
+                        <Search className="absolute left-4 top-4 mt-1 sm:mt-0 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                         <Input
                             type="text"
-                            placeholder="Search for flagged people or companies"
-                            className="pl-12 h-14 text-lg"
+                            placeholder="Search flagged people or companies..."
+                            className="pl-12 h-14 border border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-lg transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                    </div>
+                    </form>
 
-                    {showLinkedIn && (
-                        <div className="space-y-4 animate-in fade-in-50">
-                            <p className="text-center text-muted-foreground">
-                                ❌ No results found. Want to flag someone?
-                            </p>
-                            <div className="flex gap-4">
-                                <Input
-                                    type="url"
-                                    placeholder="Paste LinkedIn profile URL to flag them"
-                                    className="h-12"
-                                />
-                                <Button
-                                    type="button"
-                                    className="whitespace-nowrap"
-                                >
-                                    Flag Them
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </form>
+                    {/* Flagging Box */}
+                    <div className="space-y-4 animate-in fade-in-50">
+                        <Input
+                            type="url"
+                            placeholder="Paste LinkedIn profile URL to flag them"
+                            className="h-12 border border-gray-300 focus:ring-2 focus:ring-red-500 rounded-lg transition-all"
+                        />
+                        <Button
+                            type="button"
+                            className="w-full h-12 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all"
+                        >
+                            🚩 Flag Them
+                        </Button>
+                    </div>
+                </div>
             </section>
 
             {/* Red Flag Coins Explanation */}
