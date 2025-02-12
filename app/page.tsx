@@ -18,6 +18,8 @@ import { web3auth } from "@/lib/web3auth";
 import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 import Link from "next/link";
+import Image from "next/image";
+import logo from "./images/logo.png";
 
 export default function Home() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -74,9 +76,8 @@ export default function Home() {
         <div className="min-h-screen bg-background">
             <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-16 items-center gap-4 px-4 md:px-6">
-                    <div className="flex items-center gap-2 font-semibold">
-                        <Flag className="h-5 w-5 text-destructive" />
-                        RedFlag
+                    <div className="flex items-center gap-2 ml-4 font-semibold">
+                    <Image alt="" src={logo} width={55} height={55} />
                     </div>
 
                     <nav className="hidden md:flex flex-1 justify-end items-center gap-4 md:gap-6">
@@ -101,14 +102,10 @@ export default function Home() {
                         id="sign-up"
                         className="text-4xl md:text-6xl font-bold tracking-tight"
                     >
-                        We've all worked with someone awful.{" "}
-                        <span className="text-destructive">See the truth</span>
-                        —or make sure the world knows.
+                        We've all worked with (or for) someone awful.
                     </h1>
                     <p className="text-xl md:text-2xl text-muted-foreground">
-                        Red Flag is reputation on the blockchain—secure,
-                        transparent, and immutable. And because flags cost real
-                        money, every flag is serious.
+                    Find out who’s been flagged, or flag them yourself. Make sure the world knows.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                         {loading ? (
@@ -250,53 +247,20 @@ export default function Home() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-background border-t">
-                <div className="max-w-7xl mx-auto py-12 px-4">
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                        <div>
-                            <h3 className="font-semibold mb-4">Company</h3>
-                            <ul className="space-y-2">
-                                <li>
-                                    <Button variant="link">About</Button>
-                                </li>
-                                <li>
-                                    <Button variant="link">
-                                        Terms & Conditions
-                                    </Button>
-                                </li>
-                                <li>
-                                    <Button variant="link">
-                                        Privacy Policy
-                                    </Button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold mb-4">Support</h3>
-                            <ul className="space-y-2">
-                                <li>
-                                    <Button variant="link">FAQ</Button>
-                                </li>
-                                <li>
-                                    <Button variant="link">Contact Us</Button>
-                                </li>
-                                <li>
-                                    <Button variant="link">Support</Button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold mb-4">Social</h3>
-                            <div className="flex gap-4">
-                                <Button variant="ghost" size="icon">
-                                    <Discord className="h-5 w-5" />
-                                </Button>
-                                <Button variant="ghost" size="icon">
-                                    <Twitter className="h-5 w-5" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
+            <footer className="border-t mt-6 py-4 text-center text-sm">
+                <div className="space-x-4">
+                    <a href="/terms" className="text-muted-foreground hover:underline">
+                        Terms & Conditions
+                    </a>
+                    <a href="/privacy" className="text-muted-foreground hover:underline">
+                        Privacy Policy
+                    </a>
+                    <a href="/contact" className="text-muted-foreground hover:underline">
+                        Contact Us
+                    </a>
+                    <a href="/how-tokens-work" className="text-muted-foreground hover:underline">
+                        How Tokens Work
+                    </a>
                 </div>
             </footer>
         </div>

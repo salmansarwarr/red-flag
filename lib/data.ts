@@ -1,11 +1,12 @@
 export const peopleData = [
-    { name: "John Smith", title: "CEO at Tech Corp", flags: 156, flaggers: 89 },
-    { name: "Jane Doe", title: "CTO at InnovateX", flags: 132, flaggers: 78 },
+    { name: "John Smith", title: "CEO at Tech Corp", flags: 156, flaggers: 89, linkedin: "https://linkedin.com/in/johndoe", },
+    { name: "Jane Doe", title: "CTO at InnovateX", flags: 132, flaggers: 78, linkedin: "https://linkedin.com/in/johndoe", },
     {
         name: "Alice Brown",
         title: "Founder at NextGenAI",
         flags: 98,
         flaggers: 65,
+        linkedin: "https://linkedin.com/in/johndoe",
     },
 ];
 
