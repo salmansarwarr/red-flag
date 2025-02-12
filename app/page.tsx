@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Modal } from "@/components/Modal";
 import { useEffect, useState } from "react";
 import { web3auth } from "@/lib/web3auth";
 import { useRouter } from "next/navigation";
@@ -26,10 +27,24 @@ export default function Home() {
     const [showLinkedIn, setShowLinkedIn] = useState(false);
     const router = useRouter();
     const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+    const [postSignupCaptcha, setPostSignupCaptcha] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const onCaptchaChange = (value: string | null) => {
+    const onCaptchaChange = async (value: string | null) => {
         setCaptchaValue(value);
+        if (value) {
+            // CAPTCHA completed, proceed to dashboard
+            setLoading(true);
+            try {
+                await web3auth.connect();
+                if (web3auth.connected) {
+                    router.push("/dashboard");
+                }
+            } catch (err) {
+                console.error(err);
+                setLoading(false);
+            }
+        }
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -56,38 +71,36 @@ export default function Home() {
     }, []);
 
     const login = async () => {
-        if (!captchaValue) {
-            alert("Please complete the CAPTCHA");
-            return;
-        }
-
         setLoading(true);
         try {
             await web3auth.connect();
             if (web3auth.connected) {
-                router.push("/dashboard");
+                // Trigger the CAPTCHA modal
+                setPostSignupCaptcha(true);
+                setLoading(false);
             }
         } catch (err) {
+            console.error(err);
             setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen bg-background">
-            <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <header className="border-b flex justify-center bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-16 items-center gap-4 px-4 md:px-6">
                     <div className="flex items-center gap-2 ml-4 font-semibold">
-                    <Image alt="" src={logo} width={55} height={55} />
+                        <Image alt="" src={logo} width={55} height={55} />
                     </div>
 
-                    <nav className="hidden md:flex flex-1 justify-end items-center gap-4 md:gap-6">
+                    <nav id="sign-up" className="hidden md:flex flex-1 justify-end items-center gap-4 md:gap-6">
                         {loading ? (
                             <Loader2 className="animate-spin mr-2 h-5 w-5" />
                         ) : (
                             <Button
                                 onClick={login}
                                 size="default"
-                                className=" px-8"
+                                className="px-8"
                             >
                                 Login / Sign Up
                             </Button>
@@ -95,20 +108,33 @@ export default function Home() {
                     </nav>
                 </div>
             </header>
+            {/* Post-Signup CAPTCHA Modal */}
+            {postSignupCaptcha && (
+                <Modal
+                    open={postSignupCaptcha}
+                    onClose={() => {}}
+                >
+                    <h2 className="text-xl font-semibold mb-4">Verify You're Human</h2>
+                    {/*@ts-ignore*/}
+                    <ReCAPTCHA
+                        sitekey="6Let1tIqAAAAAAK8XujHEbguVtjwvEjbnCBIN7DR"
+                        onChange={onCaptchaChange}
+                    />
+                </Modal>
+            )}
+
             {/* Hero Section */}
             <section className="relative py-20 px-4 text-center">
                 <div className="max-w-4xl mx-auto space-y-6">
-                    <h1
-                        id="sign-up"
-                        className="text-4xl md:text-6xl font-bold tracking-tight"
-                    >
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
                         We've all worked with (or for) someone awful.
                     </h1>
                     <p className="text-xl md:text-2xl text-muted-foreground">
-                    Find out who’s been flagged, or flag them yourself. Make sure the world knows.
+                        Find out who’s been flagged, or flag them yourself. Make
+                        sure the world knows.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-                        {loading ? (
+                        {/* {loading ? (
                             <Loader2 className="animate-spin mr-2 h-5 w-5" />
                         ) : (
                             <Button
@@ -118,7 +144,7 @@ export default function Home() {
                             >
                                 Sign Up Now <ArrowRight className="ml-2" />
                             </Button>
-                        )}
+                        )} */}
                         <Link
                             href="#how-it-works"
                             className="border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md px-4 py-2 text-lg font-medium transition"
@@ -126,13 +152,13 @@ export default function Home() {
                             Learn How It Works
                         </Link>
                     </div>
-                    <div className="flex justify-center w-full">
-                        {/* @ts-ignore */}
+                    {/* <div className="flex justify-center w-full">
+                      
                         <ReCAPTCHA
                             sitekey="6Let1tIqAAAAAAK8XujHEbguVtjwvEjbnCBIN7DR"
                             onChange={onCaptchaChange}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </section>
 
@@ -249,16 +275,28 @@ export default function Home() {
             {/* Footer */}
             <footer className="border-t mt-6 py-4 text-center text-sm">
                 <div className="space-x-4">
-                    <a href="/terms" className="text-muted-foreground hover:underline">
+                    <a
+                        href="/terms"
+                        className="text-muted-foreground hover:underline"
+                    >
                         Terms & Conditions
                     </a>
-                    <a href="/privacy" className="text-muted-foreground hover:underline">
+                    <a
+                        href="/privacy"
+                        className="text-muted-foreground hover:underline"
+                    >
                         Privacy Policy
                     </a>
-                    <a href="/contact" className="text-muted-foreground hover:underline">
+                    <a
+                        href="/contact"
+                        className="text-muted-foreground hover:underline"
+                    >
                         Contact Us
                     </a>
-                    <a href="/how-tokens-work" className="text-muted-foreground hover:underline">
+                    <a
+                        href="/how-tokens-work"
+                        className="text-muted-foreground hover:underline"
+                    >
                         How Tokens Work
                     </a>
                 </div>
